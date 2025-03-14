@@ -1,0 +1,53 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services" // ✅ Firebase plugin for Google Services
+}
+
+android {
+    namespace = "com.example.govideoeditor"
+    compileSdk = 34 // ✅ Ensure it's set to a valid version
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.govideoeditor"
+        minSdkVersion 23 // ✅ Fix duplicated `minSdkVersion`
+        targetSdkVersion 34 // ✅ Ensure it's set correctly
+        versionCode 1 // ✅ Ensure values are correctly set
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    // Import the Firebase BoM (Bill of Materials)
+    implementation platform('com.google.firebase:firebase-bom:33.10.0')
+
+    // Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-storage'
+
+    // Google Play Services for authentication
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+}

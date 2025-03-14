@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>534442766167-nl7ttmu6b4giajoo1vd2vlssto8fl8o1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.534442766167-nl7ttmu6b4giajoo1vd2vlssto8fl8o1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAhH_Y1K_A9Jwpl5NgybNkafWsUk_rKLKU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>534442766167</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.govideoeditor</string>
+	<key>PROJECT_ID</key>
+	<string>govideoeditor-a1523</string>
+	<key>STORAGE_BUCKET</key>
+	<string>govideoeditor-a1523.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:534442766167:ios:27ffa13fcfa5fa93dbd812</string>
+	<key>DATABASE_URL</key>
+	<string>https://govideoeditor-a1523-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
