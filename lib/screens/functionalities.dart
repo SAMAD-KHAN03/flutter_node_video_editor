@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/models/height_width.dart';
+import 'package:govideoeditor/backend/dart/upload_video.dart';
 
 class Functionalities extends ConsumerStatefulWidget {
   const Functionalities({super.key});
@@ -17,6 +17,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
 
   @override
   Widget build(BuildContext context) {
+    final resizefunc = ref.watch(uploadProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,7 +34,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
               headerBuilder: (context, isExpanded) {
                 return ListTile(title: Text("Resize Video"));
               },
-              body: const SizedBox(
+              body: SizedBox(
                   width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -45,9 +46,10 @@ class _Functionalities extends ConsumerState<Functionalities> {
                             border: OutlineInputBorder(), // Rectangular border
                           ),
                           keyboardType: TextInputType.number,
+                          controller: widthController,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10), // Space between fields
                         child: Text(
@@ -58,6 +60,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
                       ),
                       Expanded(
                         child: TextField(
+                          controller: heightController,
                           decoration: InputDecoration(
                             labelText: "Height",
                             border: OutlineInputBorder(), // Rectangular border
@@ -65,6 +68,15 @@ class _Functionalities extends ConsumerState<Functionalities> {
                           keyboardType: TextInputType.number,
                         ),
                       ),
+                      Expanded(
+                          child: TextButton(
+                              onPressed: () async {
+                                await resizefunc.resizeVideo(
+                                    heightController.text,
+                                    widthController.text,
+                                    ref);
+                              },
+                              child: Text("go")))
                     ],
                   )),
             ),
