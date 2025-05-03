@@ -10,8 +10,8 @@ Future<String?> fetchThumbnail(String type, WidgetRef ref) async {
   if (type == "audio") storageFolder = "audio";
   // print("the userId ${userId} and the videoid ${videoId}");
   final url = await FirebaseStorage.instance
-      .ref("$storageFolder/$videoId.jpg")
+      .ref("$storageFolder/$videoId-thumbnail.jpg")
       .getDownloadURL();
-  print("this is the url" + url);
+  print("this is the url$url");
   return url;
 }

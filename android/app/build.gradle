@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.govideoeditor"
-    compileSdk = 34 // ✅ Ensure it's set to a valid version
+    compileSdk = 35 // ✅ Ensure it's set to a valid version
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

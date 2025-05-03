@@ -13,7 +13,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
   final TextEditingController widthController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
 
-  List<bool> _isOpen = [false]; // Ensure correct length
+  final List<bool> _isOpen = [false]; // Ensure correct length
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
             ExpansionPanel(
               isExpanded: _isOpen[0],
               headerBuilder: (context, isExpanded) {
-                return ListTile(title: Text("Resize Video"));
+                return const ListTile(title: Text("Resize Video"));
               },
               body: SizedBox(
                   width: double.infinity,
@@ -41,7 +41,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
                     children: [
                       Expanded(
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "Width",
                             border: OutlineInputBorder(), // Rectangular border
                           ),
@@ -50,7 +50,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
                         ),
                       ),
                       const Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                             horizontal: 10), // Space between fields
                         child: Text(
                           "X",
@@ -61,7 +61,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
                       Expanded(
                         child: TextField(
                           controller: heightController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "Height",
                             border: OutlineInputBorder(), // Rectangular border
                           ),
@@ -76,7 +76,7 @@ class _Functionalities extends ConsumerState<Functionalities> {
                                     widthController.text,
                                     ref);
                               },
-                              child: Text("go")))
+                              child: const Text("go")))
                     ],
                   )),
             ),

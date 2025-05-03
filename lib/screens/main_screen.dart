@@ -92,7 +92,7 @@ class _MainScreen extends ConsumerState<MainScreen> {
                               );
                             }
                             if (snapshot.hasError) {
-                              return const Center();
+                              return const Center(child:  Text("some "),);
                             }
                             return const CircularProgressIndicator();
                           })

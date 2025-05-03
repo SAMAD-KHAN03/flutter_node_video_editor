@@ -77,9 +77,9 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
     final videoFile = ref.read(videoProvider);
     print("the video path is ${videoFile!.path}");
     final videoId = ref.read(shaProvider);
-    final videoInfo = await FlutterVideoInfo().getVideoInfo(videoFile!.path);
+    final videoInfo = await FlutterVideoInfo().getVideoInfo(videoFile.path);
     final userId = ref.read(authenticationProvider).uid;
-    print("the height and width in flutter is ${height} ${width}");
+    print("the height and width in flutter is $height $width");
     FormData formdata = FormData.fromMap({
       "userId": userId,
       "videoId": videoId,
