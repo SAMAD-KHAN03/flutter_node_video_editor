@@ -50,21 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDWeh74a38rElbOzaXc6CVJQvgE0TpTPgI',
-    appId: '1:534442766167:android:b7338813871d22dadbd812',
-    messagingSenderId: '534442766167',
-    projectId: 'govideoeditor-a1523',
-    databaseURL: 'https://govideoeditor-a1523-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'govideoeditor-a1523.firebasestorage.app',
+    apiKey: 'AIzaSyCtU-lTO3QB7zG68itCZO2HDsIwrWFLHq8',
+    appId: '1:482567886553:android:11bb4340e76096d6c9d0c8',
+    messagingSenderId: '482567886553',
+    projectId: 'go-video-editor-7bf75',
+    storageBucket: 'go-video-editor-7bf75.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAhH_Y1K_A9Jwpl5NgybNkafWsUk_rKLKU',
-    appId: '1:534442766167:ios:27ffa13fcfa5fa93dbd812',
-    messagingSenderId: '534442766167',
-    projectId: 'govideoeditor-a1523',
-    databaseURL: 'https://govideoeditor-a1523-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'govideoeditor-a1523.firebasestorage.app',
+    apiKey: 'AIzaSyCaj3omRtAtqY4mfMgdwnzQguS9u-X5NFk',
+    appId: '1:482567886553:ios:f884976ecb7fd404c9d0c8',
+    messagingSenderId: '482567886553',
+    projectId: 'go-video-editor-7bf75',
+    storageBucket: 'go-video-editor-7bf75.firebasestorage.app',
     iosBundleId: 'com.example.govideoeditor',
   );
+
 }

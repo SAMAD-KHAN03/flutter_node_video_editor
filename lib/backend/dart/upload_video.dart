@@ -7,6 +7,9 @@ import 'package:govideoeditor/providers/sha_provider.dart';
 import 'package:govideoeditor/providers/video_file_provider.dart';
 import 'package:http_parser/http_parser.dart';
 
+const IP = "10.0.2.2";
+const PORT = "3000";
+
 enum UploadStatus { idle, uploading, success, error }
 
 class UploadNotifier extends StateNotifier<UploadStatus> {
@@ -45,7 +48,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
       "videoId": sha,
       "mime": videoInfo.mimetype!.split('/')[1],
       "operation": "thumbnail",
-      "userId": uid,
+      //"userId": uid,
       "duration": videoInfo.duration
     });
 
@@ -54,7 +57,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
 
     try {
       Response response = await dio.post(
-        "http://10.0.2.2:3000/upload",
+        "http://$IP:$PORT/upload",
         data: formData,
         options: Options(headers: {"Content-Type": "multipart/form-data"}),
       );
@@ -90,7 +93,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
     Dio dio = Dio();
     try {
       Response response = await dio.post(
-        "http://10.0.2.2:3000/resize",
+        "http://$IP:$PORT/upload",
         data: formdata,
         options: Options(headers: {"Content-Type": "multipart/form-data"}),
       );

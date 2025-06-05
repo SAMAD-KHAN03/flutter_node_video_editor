@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId = "com.example.govideoeditor"
         minSdkVersion 23 // ✅ Fix duplicated `minSdkVersion`
-        targetSdkVersion 34 // ✅ Ensure it's set correctly
+        targetSdkVersion 35 // ✅ Ensure it's set correctly
         versionCode 1 // ✅ Ensure values are correctly set
         versionName "1.0"
     }
@@ -40,8 +40,8 @@ flutter {
 
 dependencies {
     // Import the Firebase BoM (Bill of Materials)
-    implementation platform('com.google.firebase:firebase-bom:33.10.0')
-
+    implementation platform('com.google.firebase:firebase-bom:33.2.0') // ← Replace with a **stable** version
+    implementation 'com.google.firebase:firebase-messaging'
     // Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'

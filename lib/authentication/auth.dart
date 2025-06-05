@@ -11,7 +11,7 @@ class Auth extends ChangeNotifier {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-      final credentials = GoogleAuthProvider.credential(
+      final credentials =  GoogleAuthProvider.credential(
           idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
       await _auth.signInWithCredential(credentials);
     } on Exception catch (e) {
