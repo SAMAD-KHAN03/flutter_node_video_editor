@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/backend/dart/upload_video.dart';
+import 'package:flutter_node_video_editor/backend/dart/upload_video.dart';
 
 class Functionalities extends ConsumerStatefulWidget {
   const Functionalities({super.key});

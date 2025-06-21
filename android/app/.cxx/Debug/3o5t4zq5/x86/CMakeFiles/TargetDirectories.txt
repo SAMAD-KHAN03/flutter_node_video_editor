@@ -1,2 +1,2 @@
-/Users/samad/Documents/MyFlutterProjects/govideoeditor/android/app/.cxx/Debug/3o5t4zq5/x86/CMakeFiles/edit_cache.dir
-/Users/samad/Documents/MyFlutterProjects/govideoeditor/android/app/.cxx/Debug/3o5t4zq5/x86/CMakeFiles/rebuild_cache.dir
+/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/Debug/3o5t4zq5/x86/CMakeFiles/edit_cache.dir
+/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/Debug/3o5t4zq5/x86/CMakeFiles/rebuild_cache.dir

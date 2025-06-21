@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
-import 'package:govideoeditor/providers/auth_provider.dart';
-import 'package:govideoeditor/providers/sha_provider.dart';
-import 'package:govideoeditor/providers/video_file_provider.dart';
+import 'package:flutter_node_video_editor/providers/auth_provider.dart';
+import 'package:flutter_node_video_editor/providers/sha_provider.dart';
+import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
 import 'package:http_parser/http_parser.dart';
 
-const IP = "10.0.2.2";
+const IP = "192.168.1.95";
 const PORT = "3000";
 
 enum UploadStatus { idle, uploading, success, error }
@@ -26,7 +26,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
     final uid = ref.watch(authenticationProvider).uid;
     // print("$sha and the uid $uid");
     if (sha == null || uid == null) {
-      // print("Error: SHA or UID is null");
+      print("Error: SHA or UID is null");
       state = UploadStatus.error;
       return; //  Stop execution if values are missing
     }
@@ -48,7 +48,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
       "videoId": sha,
       "mime": videoInfo.mimetype!.split('/')[1],
       "operation": "thumbnail",
-      //"userId": uid,
+      "userId": uid,
       "duration": videoInfo.duration
     });
 
@@ -68,10 +68,10 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
         state = UploadStatus.error;
       }
     } catch (e) {
-      // print("Upload failed: $e");
+      print("Upload failed: $e");
       state = UploadStatus.error;
     } finally {
-      // print("the current status of upload is ${state}");
+      print("the current status of upload is ${state}");
     }
   }
 
@@ -93,7 +93,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
     Dio dio = Dio();
     try {
       Response response = await dio.post(
-        "http://$IP:$PORT/upload",
+        "http://$IP:$PORT/resize",
         data: formdata,
         options: Options(headers: {"Content-Type": "multipart/form-data"}),
       );

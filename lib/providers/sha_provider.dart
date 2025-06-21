@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/providers/video_file_provider.dart';
+import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
 
 final shaProvider = StateProvider<String?>((ref) => null);
 

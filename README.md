@@ -1,4 +1,4 @@
-# govideoeditor
+# flutter_node_video_editor
 
 A new Flutter project.
 

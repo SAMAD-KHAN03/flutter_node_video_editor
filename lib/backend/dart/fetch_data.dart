@@ -1,6 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/providers/sha_provider.dart';
+import 'package:flutter_node_video_editor/providers/sha_provider.dart';
 
 Future<String?> fetchThumbnail(String type, WidgetRef ref) async {
   // final userId = ref.read(authenticationProvider).uid;

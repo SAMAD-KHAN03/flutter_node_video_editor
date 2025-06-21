@@ -2,19 +2,41 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/backend/dart/fetch_data.dart';
-import 'package:govideoeditor/backend/dart/upload_video.dart';
-import 'package:govideoeditor/models/height_width.dart';
-import 'package:govideoeditor/providers/sha_provider.dart';
-import 'package:govideoeditor/providers/video_file_provider.dart';
-import 'package:govideoeditor/screens/functionalities.dart';
-import 'package:govideoeditor/widgets/bar.dart';
+import 'package:flutter_node_video_editor/backend/dart/fetch_data.dart';
+import 'package:flutter_node_video_editor/backend/dart/upload_video.dart';
+import 'package:flutter_node_video_editor/models/height_width.dart';
+import 'package:flutter_node_video_editor/providers/sha_provider.dart';
+import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
+import 'package:flutter_node_video_editor/screens/functionalities.dart';
+import 'package:flutter_node_video_editor/widgets/bar.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/bi.dart';
+import 'package:iconify_flutter/icons/bx.dart';
+import 'package:iconify_flutter/icons/ep.dart';
+import 'package:iconify_flutter/icons/heroicons.dart';
+import 'package:iconify_flutter/icons/ic.dart';
+import 'package:iconify_flutter/icons/ion.dart';
+import 'package:iconify_flutter/icons/uil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
   @override
   ConsumerState<MainScreen> createState() => _MainScreen();
+}
+
+outlinedButton(Iconify icon, double containerSize, double padding) {
+  return Padding(
+    padding: EdgeInsets.all(padding),
+    child: Container(
+      width: containerSize,
+      height: containerSize,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(8)),
+      child: icon,
+    ),
+  );
 }
 
 class _MainScreen extends ConsumerState<MainScreen> {
@@ -55,21 +77,33 @@ class _MainScreen extends ConsumerState<MainScreen> {
     final videoFile = ref.watch(videoProvider);
     final uploadstate = ref.watch(uploadProvider);
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(80),
-            child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: <Color>[Colors.blue, Colors.pink])),
-              child: const Bar(),
-            )),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF377D9A),
+          actions: [
+            outlinedButton(Iconify(Ic.arrow_back), 28, 16),
+            Spacer(),
+            Text("DashBoard"),
+            Spacer(),
+            outlinedButton(Iconify(Ic.outline_person), 28, 16)
+          ],
+        ),
+        body: Stack(
           children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-            Align(
-              alignment: Alignment.center,
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    const Color(0xFF397E9B),
+                    const Color(0xFF1F6381).withValues(alpha: .8),
+                    const Color(0xFF142B35),
+                  ])),
+            ),
+            Positioned(
+              top: HeightWidth.height! * 0.05,
+              left: HeightWidth.width! * 0.1,
+              right: HeightWidth.width! * 0.1,
               child: uploadstate == UploadStatus.uploading
                   ? const CircularProgressIndicator()
                   : uploadstate == UploadStatus.success && videoFile != null
@@ -92,35 +126,38 @@ class _MainScreen extends ConsumerState<MainScreen> {
                               );
                             }
                             if (snapshot.hasError) {
-                              return const Center(child:  Text("some "),);
+                              return const Center(
+                                child: Text("some "),
+                              );
                             }
                             return const CircularProgressIndicator();
                           })
                       : uploadstate == UploadStatus.error
                           ? materialbanner(context, ref)
-                          : DottedBorder(
-                              borderType: BorderType.RRect,
-                              color: Colors.purple,
-                              radius: const Radius.circular(12),
-                              child: SizedBox(
-                                  width: HeightWidth.width! * 0.7,
-                                  height: HeightWidth.height! * 0.25,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                          iconSize: 40,
-                                          onPressed: () {
-                                            pickVideo(ref);
-                                          },
-                                          icon:
-                                              const Icon(Icons.upload_rounded)),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Text("Upload the video file"),
-                                    ],
-                                  )),
+                          : Container(
+                              child: Center(
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.black, width: 1),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Iconify(
+                                    Ep.upload,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                              width: 200,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  style: BorderStyle.solid,
+                                  width: 1,
+                                ),
+                              ),
                             ),
             ),
             if (uploadstate == UploadStatus.success && videoFile != null)
@@ -132,8 +169,26 @@ class _MainScreen extends ConsumerState<MainScreen> {
                     },
                     child: const Text("Cancel")),
               ),
-            if (uploadstate == UploadStatus.success && videoFile != null) const Functionalities()
+            if (uploadstate == UploadStatus.success && videoFile != null)
+              const Functionalities()
           ],
         ));
   }
 }
+/**FutureBuilder(
+                          future: fetchThumbnail("thumnail", ref),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                width: HeightWidth.width! * 0.7,
+                                height: HeightWidth.height! * 0.25,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Apply rounded edges
+                                  child: Image.network(
+                                    snapshot.data!,
+                                    fit: BoxFit
+                                        .fill, // Ensures the image fills the square properly
+                                  ),
+                                ),
+                              ) */

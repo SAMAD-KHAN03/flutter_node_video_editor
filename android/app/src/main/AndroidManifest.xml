@@ -4,7 +4,7 @@
     <!-- Required Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="com.govideoeditor.framework.permission.ACCESS_BACKSCREEN" />
+    <uses-permission android:name="com.flutter_node_video_editor.framework.permission.ACCESS_BACKSCREEN" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- Permissions for Android 13+ -->
@@ -17,7 +17,7 @@
         android:maxSdkVersion="29"/>
     
     <application
-        android:label="govideoeditor"
+        android:label="flutter_node_video_editor"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

@@ -6,14 +6,14 @@
     [
       "/Users/samad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
       "-C",
-      "/Users/samad/Documents/MyFlutterProjects/govideoeditor/android/app/.cxx/Debug/3o5t4zq5/x86",
+      "/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/Debug/3o5t4zq5/x86",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
     "/Users/samad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
     "-C",
-    "/Users/samad/Documents/MyFlutterProjects/govideoeditor/android/app/.cxx/Debug/3o5t4zq5/x86",
+    "/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/Debug/3o5t4zq5/x86",
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {}

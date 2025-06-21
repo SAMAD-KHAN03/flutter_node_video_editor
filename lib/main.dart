@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_node_video_editor/screens/main_clone.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:govideoeditor/firebase_options.dart';
-import 'package:govideoeditor/models/height_width.dart';
-import 'package:govideoeditor/providers/auth_provider.dart';
-import 'package:govideoeditor/screens/login_screen.dart';
-import 'package:govideoeditor/screens/main_screen.dart';
+import 'package:flutter_node_video_editor/firebase_options.dart';
+import 'package:flutter_node_video_editor/models/height_width.dart';
+import 'package:flutter_node_video_editor/providers/auth_provider.dart';
+import 'package:flutter_node_video_editor/screens/login_screen.dart';
+import 'package:flutter_node_video_editor/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

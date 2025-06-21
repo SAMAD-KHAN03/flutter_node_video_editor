@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'go-video-editor-7bf75.firebasestorage.app',
     iosBundleId: 'com.example.govideoeditor',
   );
-
 }
