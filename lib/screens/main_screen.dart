@@ -112,7 +112,7 @@ class _MainScreen extends ConsumerState<MainScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return SizedBox(
-                                width: HeightWidth.width! * 0.7,
+                                width: HeightWidth.width! * 0.8,
                                 height: HeightWidth.height! * 0.25,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
@@ -136,21 +136,31 @@ class _MainScreen extends ConsumerState<MainScreen> {
                           ? materialbanner(context, ref)
                           : Container(
                               child: Center(
-                                child: Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.black, width: 1),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Iconify(
-                                    Ep.upload,
-                                    size: 24,
-                                  ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.black, width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: GestureDetector(
+                                        onTap: () => pickVideo(ref),
+                                        child: Iconify(
+                                          Ep.upload,
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                    Text("Upload Video")
+                                  ],
                                 ),
                               ),
-                              width: 200,
-                              height: 200,
+                              width: HeightWidth.width! * 0.8,
+                              height: HeightWidth.height! * 0.3,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
@@ -161,16 +171,31 @@ class _MainScreen extends ConsumerState<MainScreen> {
                             ),
             ),
             if (uploadstate == UploadStatus.success && videoFile != null)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      ref.watch(videoProvider.notifier).clearvideo();
-                    },
-                    child: const Text("Cancel")),
+              Positioned(
+                top: HeightWidth.height! * 0.3 + HeightWidth.height! * 0.02,
+                left: HeightWidth.width! * 0.35,
+                right: HeightWidth.width! * 0.35,
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                          blurRadius: 12,
+                          color: Color.fromARGB(112, 0, 0, 0),
+                          blurStyle: BlurStyle.outer),
+                    ],
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
               ),
             if (uploadstate == UploadStatus.success && videoFile != null)
-              const Functionalities()
+               Functionalities()
           ],
         ));
   }
@@ -191,4 +216,8 @@ class _MainScreen extends ConsumerState<MainScreen> {
                                         .fill, // Ensures the image fills the square properly
                                   ),
                                 ),
-                              ) */
+                              )
+                              
+                               onPressed: () {
+                        ref.watch(videoProvider.notifier).clearvideo();
+                      }, */
