@@ -194,8 +194,8 @@ class _MainScreen extends ConsumerState<MainScreen> {
                   ),
                 ),
               ),
-            if (uploadstate == UploadStatus.success && videoFile != null)
-               Functionalities()
+            // if (uploadstate == UploadStatus.success && videoFile != null)
+            Functionalities()
           ],
         ));
   }
