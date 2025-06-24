@@ -41,6 +41,13 @@ List<DropdownMenuEntry<String>> dropdown() {
 class _Functionalities extends ConsumerState<Functionalities> {
   final TextEditingController widthController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    heightController.dispose();
+    widthController.dispose();
+  }
 
   final List<bool> _isOpen = [false, false]; // Ensure correct length
   @override
@@ -119,6 +126,8 @@ class _Functionalities extends ConsumerState<Functionalities> {
                                   heightController.text,
                                   widthController.text,
                                   ref);
+                              heightController.clear();
+                              widthController.clear();
                             },
                           ),
                         )

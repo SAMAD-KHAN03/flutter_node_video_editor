@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_node_video_editor/backend/dart/videos.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_node_video_editor/backend/dart/fetch_data.dart';
 import 'package:flutter_node_video_editor/backend/dart/upload_video.dart';
@@ -25,16 +26,24 @@ class MainScreen extends ConsumerStatefulWidget {
   ConsumerState<MainScreen> createState() => _MainScreen();
 }
 
-outlinedButton(Iconify icon, double containerSize, double padding) {
-  return Padding(
-    padding: EdgeInsets.all(padding),
-    child: Container(
-      width: containerSize,
-      height: containerSize,
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 1),
-          borderRadius: BorderRadius.circular(8)),
-      child: icon,
+outlinedButton(
+    Iconify icon, double containerSize, double padding, BuildContext context) {
+  return InkWell(
+    onTap: () {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Videos(),
+      ));
+    },
+    child: Padding(
+      padding: EdgeInsets.all(padding),
+      child: Container(
+        width: containerSize,
+        height: containerSize,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1),
+            borderRadius: BorderRadius.circular(8)),
+        child: icon,
+      ),
     ),
   );
 }
@@ -80,11 +89,11 @@ class _MainScreen extends ConsumerState<MainScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF377D9A),
           actions: [
-            outlinedButton(Iconify(Ic.arrow_back), 28, 16),
+            outlinedButton(Iconify(Ic.arrow_back), 28, 16, context),
             Spacer(),
             Text("DashBoard"),
             Spacer(),
-            outlinedButton(Iconify(Ic.outline_person), 28, 16)
+            outlinedButton(Iconify(Ic.outline_person), 28, 16, context)
           ],
         ),
         body: Stack(
@@ -108,7 +117,7 @@ class _MainScreen extends ConsumerState<MainScreen> {
                   ? const CircularProgressIndicator()
                   : uploadstate == UploadStatus.success && videoFile != null
                       ? FutureBuilder(
-                          future: fetchThumbnail("thumnail", ref),
+                          future: fetchThumbnail(ref),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return SizedBox(
@@ -176,10 +185,15 @@ class _MainScreen extends ConsumerState<MainScreen> {
                 left: HeightWidth.width! * 0.35,
                 right: HeightWidth.width! * 0.35,
                 child: Container(
-                  child: Center(
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  child: GestureDetector(
+                    onTap: () {
+                      ref.watch(videoProvider.notifier).clearvideo();
+                    },
+                    child: Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   height: 50,
@@ -194,8 +208,8 @@ class _MainScreen extends ConsumerState<MainScreen> {
                   ),
                 ),
               ),
-            // if (uploadstate == UploadStatus.success && videoFile != null)
-            Functionalities()
+            if (uploadstate == UploadStatus.success && videoFile != null)
+              Functionalities()
           ],
         ));
   }

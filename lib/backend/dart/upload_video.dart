@@ -87,7 +87,7 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
       "userId": userId,
       "videoId": videoId,
       "width": width,
-      "height": height,
+        "height": height,
       "mime": videoInfo!.mimetype,
     });
     Dio dio = Dio();

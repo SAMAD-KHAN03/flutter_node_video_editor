@@ -81,6 +81,11 @@ class _MainCloneState extends State<MainClone> {
               ),
             ),
           ),
+          Center(
+              child: SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: const CircularProgressIndicator()))
         ],
       ),
     );
