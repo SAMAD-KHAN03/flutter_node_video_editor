@@ -1,47 +1,77 @@
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class Download {
-  Future<void> download() async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final fileRef = storageRef.child("videos/1740690543833_output.mp4");
+enum DownlaodStatus { Downloading, Error, Downlaoded, idle }
 
+class Download extends StateNotifier<DownlaodStatus> {
+  Download() : super(DownlaodStatus.idle);
+
+  static const platform = MethodChannel('com.example.govideoeditor/download');
+
+  Future<void> download(String downloadUrl, String fileNameWithoutExt) async {
     try {
-      Directory tempDir = await getTemporaryDirectory();
-      File localFile = File("${tempDir.path}/downloaded_video.mp4");
-      await fileRef.writeToFile(localFile);
-      await moveFileToDownloads();
-      print("File downloaded to: ${localFile.path}");
-    } on FirebaseException catch (e) {
-      print("Download failed: ${e.message}");
+      state = DownlaodStatus.Downloading;
+
+      if (Platform.isAndroid) {
+        final status = await Permission.storage.request();
+        if (!status.isGranted) {
+          state = DownlaodStatus.Error;
+          print("Storage permission denied");
+          return;
+        }
+      }
+
+      final response = await http.get(Uri.parse(downloadUrl));
+      if (response.statusCode != 200) {
+        state = DownlaodStatus.Error;
+        throw Exception("Failed to download file: ${response.statusCode}");
+      }
+
+      // 🔍 Extract extension from URL and construct full file name
+      final extension = _getFileExtensionFromUrl(downloadUrl);
+      print("the extension found is ${extension}");
+      final fileName = "$fileNameWithoutExt.$extension";
+
+      // Save to temp file
+      final tempDir = await getTemporaryDirectory();
+      final tempPath = "${tempDir.path}/$fileName";
+      final file = File(tempPath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      // Save to Downloads using platform channel
+      await saveToDownloads(tempPath, fileName);
+
+      print("Download completed and moved to Downloads");
+      state = DownlaodStatus.Downlaoded;
+    } catch (e) {
+      state = DownlaodStatus.Error;
+      print("Download failed: $e");
     }
   }
 
-  Future<void> moveFileToDownloads() async {
-    File privateFile = File(
-        "/data/user/0/com.example.govideoeditor/cache/downloaded_video.mp4");
-
-    if (!privateFile.existsSync()) {
-      print("Source file does not exist!");
-      return;
-    }
-
-    Directory? downloadsDir =
-        await getExternalStorageDirectory(); // Get base storage
-    String downloadsPath = "${downloadsDir!.path}/Download";
-
-    // Ensure the directory exists
-    Directory(downloadsPath).createSync(recursive: true);
-
-    // New file path
-    String newPath = "$downloadsPath/downloaded_video.mp4";
-
+  Future<void> saveToDownloads(String filePath, String fileName) async {
     try {
-      privateFile.copySync(newPath);
-      print("File moved to: $newPath");
-    } catch (e) {
-      print("Failed to move file: $e");
+      await platform.invokeMethod('saveToDownloads', {
+        'filePath': filePath,
+        'fileName': fileName,
+      });
+    } on PlatformException catch (e) {
+      throw Exception("Failed to save to Downloads: ${e.message}");
     }
+  }
+
+  /// Extract file extension from the Firebase Storage URL
+  String _getFileExtensionFromUrl(String url) {
+    final decodedUrl = Uri.decodeFull(url);
+    final match = RegExp(r'\.([a-zA-Z0-9]+)\?alt=media').firstMatch(decodedUrl);
+    // print("the extension found is $match")
+    return match != null ? match.group(1)! : 'bin'; // Fallback if not found
   }
 }
+
+final downlaodStateProvider =
+    StateNotifierProvider<Download, DownlaodStatus>((ref) => Download());

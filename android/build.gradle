@@ -1,21 +1,18 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
-        google() // ✅ Ensure Google repository is available
-        mavenCentral() // ✅ Ensure Maven Central is available
+        google()
+        mavenCentral()
     }
     dependencies {
-        // Google Services plugin for Firebase
-        classpath 'com.google.gms:google-services:4.4.2'
+        classpath 'com.google.gms:google-services:4.3.15' // ✅ Matches plugin version
     }
 }
 
 allprojects {
     repositories {
-        google() // ✅ Ensure Google repository is present for all projects
-        mavenCentral() // ✅ Ensure Maven Central is present
-        maven { url 'https://jitpack.io' } // ✅ Optional for other dependencies
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -35,10 +32,6 @@ subprojects {
             }
         }
     }
-}
-
-subprojects {
-    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {

@@ -1,0 +1,2 @@
+/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/RelWithDebInfo/6v35u2k6/x86_64/CMakeFiles/edit_cache.dir
+/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/RelWithDebInfo/6v35u2k6/x86_64/CMakeFiles/rebuild_cache.dir

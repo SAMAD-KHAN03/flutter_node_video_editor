@@ -1,4 +1,9 @@
+// ignore_for_file: unused_import
+
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node_video_editor/backend/dart/videos.dart';
@@ -9,9 +14,9 @@ import 'package:flutter_node_video_editor/models/height_width.dart';
 import 'package:flutter_node_video_editor/providers/sha_provider.dart';
 import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
 import 'package:flutter_node_video_editor/screens/functionalities.dart';
-import 'package:flutter_node_video_editor/widgets/bar.dart';
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/bi.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconify_flutter/icons/bx.dart';
 import 'package:iconify_flutter/icons/ep.dart';
 import 'package:iconify_flutter/icons/heroicons.dart';
@@ -82,7 +87,8 @@ class _MainScreen extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final sha = ref.read(shaProvider);
+    final sha = ref.read(shaProvider);
+
     final videoFile = ref.watch(videoProvider);
     final uploadstate = ref.watch(uploadProvider);
     return Scaffold(
@@ -135,49 +141,46 @@ class _MainScreen extends ConsumerState<MainScreen> {
                               );
                             }
                             if (snapshot.hasError) {
-                              return const Center(
-                                child: Text("some "),
+                              return Center(
+                                child: Text("${snapshot.error.toString()} "),
                               );
                             }
                             return const CircularProgressIndicator();
                           })
-                      : uploadstate == UploadStatus.error
-                          ? materialbanner(context, ref)
-                          : Container(
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.black, width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: GestureDetector(
-                                        onTap: () => pickVideo(ref),
-                                        child: Iconify(
-                                          Ep.upload,
-                                          size: 24,
-                                        ),
-                                      ),
+                      : Container(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.black, width: 1),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: GestureDetector(
+                                    onTap: () => pickVideo(ref),
+                                    child: Iconify(
+                                      Ep.upload,
+                                      size: 24,
                                     ),
-                                    Text("Upload Video")
-                                  ],
+                                  ),
                                 ),
-                              ),
-                              width: HeightWidth.width! * 0.8,
-                              height: HeightWidth.height! * 0.3,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 1,
-                                ),
-                              ),
+                                Text("Upload Video")
+                              ],
                             ),
+                          ),
+                          width: HeightWidth.width! * 0.8,
+                          height: HeightWidth.height! * 0.3,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              style: BorderStyle.solid,
+                              width: 1,
+                            ),
+                          ),
+                        ),
             ),
             if (uploadstate == UploadStatus.success && videoFile != null)
               Positioned(
@@ -185,28 +188,46 @@ class _MainScreen extends ConsumerState<MainScreen> {
                 left: HeightWidth.width! * 0.35,
                 right: HeightWidth.width! * 0.35,
                 child: Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      ref.watch(videoProvider.notifier).clearvideo();
-                    },
-                    child: Center(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                            blurRadius: 12,
+                            color: Color.fromARGB(112, 0, 0, 0),
+                            blurStyle: BlurStyle.outer),
+                      ],
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                  ),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                          blurRadius: 12,
-                          color: Color.fromARGB(112, 0, 0, 0),
-                          blurStyle: BlurStyle.outer),
-                    ],
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        try {
+                          final videoInfo = await FlutterVideoInfo()
+                              .getVideoInfo(videoFile.path);
+
+                          await http.delete(
+                            Uri.parse("http://192.168.1.97:3000/delete"),
+                            body: jsonEncode({
+                              "videoId": sha,
+                              "mime": videoInfo!.mimetype,
+                            }),
+                            headers: {"Content-Type": "application/json"},
+                          );
+                        } catch (e) {
+                          print("Error while deleting: $e");
+                        } finally {
+                          print("inside finally");
+                          ref.watch(videoProvider.notifier).clearvideo();
+                          // print(videoProvider.notifier);
+                          setState(() {});
+                        }
+                      },
+                      child: Center(
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )),
               ),
             if (uploadstate == UploadStatus.success && videoFile != null)
               Functionalities()

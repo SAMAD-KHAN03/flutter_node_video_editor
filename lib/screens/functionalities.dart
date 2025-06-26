@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_node_video_editor/backend/dart/operations.dart';
 import 'package:flutter_node_video_editor/models/height_width.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_node_video_editor/backend/dart/upload_video.dart';
@@ -41,21 +42,24 @@ List<DropdownMenuEntry<String>> dropdown() {
 class _Functionalities extends ConsumerState<Functionalities> {
   final TextEditingController widthController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
+  final TextEditingController audio = TextEditingController();
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     heightController.dispose();
     widthController.dispose();
+    audio.dispose();
   }
 
   final List<bool> _isOpen = [false, false]; // Ensure correct length
   @override
   Widget build(BuildContext context) {
-    final resizefunc = ref.watch(uploadProvider.notifier);
+    final operations = ref.watch(operationProvider.notifier);
     return Positioned(
-      left: HeightWidth.width! * 0.05,
-      right: HeightWidth.width! * 0.05,
+      left: HeightWidth.width! * 0.04,
+      right: HeightWidth.width! * 0.04,
       top: HeightWidth.height! * 0.3 + HeightWidth.height! * 0.02 + 50,
       child: Container(
         width: HeightWidth.width! * 0.8,
@@ -122,7 +126,19 @@ class _Functionalities extends ConsumerState<Functionalities> {
                           child: IconButton(
                             icon: Icon(Icons.check),
                             onPressed: () async {
-                              await resizefunc.resizeVideo(
+                              if (!RegExp(r'^\d+$')
+                                      .hasMatch(heightController.text) ||
+                                  !RegExp(r'^\d+$')
+                                      .hasMatch(heightController.text)) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "height or width must be numbers")));
+                                heightController.clear();
+                                widthController.clear();
+                                return;
+                              }
+                              await operations.resizeVideo(
                                   heightController.text,
                                   widthController.text,
                                   ref);
@@ -150,9 +166,8 @@ class _Functionalities extends ConsumerState<Functionalities> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Output in'),
+                        Text('Output '),
                         Spacer(),
-
                         Text(
                           "->",
                           style: TextStyle(
@@ -166,18 +181,15 @@ class _Functionalities extends ConsumerState<Functionalities> {
                           menuHeight: 100,
                           dropdownMenuEntries: dropdown(),
                           hintText: "Select format",
+                          controller: audio,
                         ),
-                        // Expanded(
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.check),
-                        //     onPressed: () async {
-                        //       await resizefunc.resizeVideo(
-                        //           heightController.text,
-                        //           widthController.text,
-                        //           ref);
-                        //     },
-                        //   ),
-                        // )
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.check),
+                          onPressed: () async {
+                            await operations.audio(audio.text, ref);
+                          },
+                        )
                       ],
                     ),
                   ),

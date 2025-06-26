@@ -1,15 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_node_video_editor/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_node_video_editor/providers/sha_provider.dart';
 
 Future<String> fetchThumbnail(WidgetRef ref) async {
-  // final userId = ref.read(authenticationProvider).uid;
-  var storageFolder = "image";
+  final userId = ref.read(authenticationProvider).uid;
   var videoId = ref.read(shaProvider);
-  // print("the userId ${userId} and the videoid ${videoId}");
-  final url = await FirebaseStorage.instance
-      .ref("$storageFolder/$videoId-thumbnail.jpg")
-      .getDownloadURL();
-  print("this is the url$url");
-  return url;
+  print("user id ${userId} and the video id ${videoId}");
+  final url = await FirebaseFirestore.instance
+      .collection("users")
+      .doc(userId)
+      .collection(videoId!)
+      .doc("thumbnail")
+      .get();
+  return url['thumbnail'];
 }

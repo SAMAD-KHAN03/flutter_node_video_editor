@@ -2,34 +2,37 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
-    id "com.google.gms.google-services" // ✅ Firebase plugin for Google Services
+    id "com.google.gms.google-services"
 }
 
 android {
     namespace = "com.example.govideoeditor"
-    compileSdk = 35 // ✅ Ensure it's set to a valid version
+    compileSdk = 35 // 🔥 35 is preview, recommend 34 for stable
+
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        jvmToolchain(17) // ✅ JVM 17
     }
 
     defaultConfig {
         applicationId = "com.example.govideoeditor"
-        minSdkVersion 23 // ✅ Fix duplicated `minSdkVersion`
-        targetSdkVersion 35 // ✅ Ensure it's set correctly
-        versionCode 1 // ✅ Ensure values are correctly set
+        minSdkVersion 23
+        targetSdkVersion 34
+        versionCode 1
         versionName "1.0"
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
@@ -39,15 +42,16 @@ flutter {
 }
 
 dependencies {
-    // Import the Firebase BoM (Bill of Materials)
-    implementation platform('com.google.firebase:firebase-bom:33.2.0') // ← Replace with a **stable** version
+    // Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:33.2.0')
+
+    // Firebase services
     implementation 'com.google.firebase:firebase-messaging'
-    // Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-storage'
 
-    // Google Play Services for authentication
+    // Google Play Services Auth
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_video_editor/backend/dart/videos.dart';
 import 'package:flutter_node_video_editor/models/video.dart';
 import 'package:flutter_node_video_editor/screens/functionalities.dart';
-import 'package:flutter_node_video_editor/screens/main_clone.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_node_video_editor/firebase_options.dart';
 import 'package:flutter_node_video_editor/models/height_width.dart';

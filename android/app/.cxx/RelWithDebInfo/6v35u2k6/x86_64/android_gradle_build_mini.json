@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/samad/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/samad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/RelWithDebInfo/6v35u2k6/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/samad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/android/app/.cxx/RelWithDebInfo/6v35u2k6/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

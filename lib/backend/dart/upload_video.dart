@@ -7,8 +7,8 @@ import 'package:flutter_node_video_editor/providers/sha_provider.dart';
 import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
 import 'package:http_parser/http_parser.dart';
 
-const IP = "192.168.1.95";
-const PORT = "3000";
+const ip = "192.168.1.97";
+const port = "3000";
 
 enum UploadStatus { idle, uploading, success, error }
 
@@ -32,12 +32,6 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
     }
 
     final videoInfo = await FlutterVideoInfo().getVideoInfo(videoFile.path);
-    final exists = await alreadyExists(sha, uid);
-    if (exists) {
-      state = UploadStatus.success;
-      return;
-    }
-
     // Proceed with upload
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(
@@ -57,7 +51,10 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
 
     try {
       Response response = await dio.post(
-        "http://$IP:$PORT/upload",
+        onSendProgress: (int sent, int total) {
+          print("Sent: $sent Total: $total");
+        },
+        "http://$ip:$port/upload",
         data: formData,
         options: Options(headers: {"Content-Type": "multipart/form-data"}),
       );
@@ -74,49 +71,6 @@ class UploadNotifier extends StateNotifier<UploadStatus> {
       print("the current status of upload is ${state}");
     }
   }
-
-  Future<void> resizeVideo(String? height, String? width, WidgetRef ref) async {
-    if (height == null || width == null) return;
-    final videoFile = ref.read(videoProvider);
-    print("the video path is ${videoFile!.path}");
-    final videoId = ref.read(shaProvider);
-    final videoInfo = await FlutterVideoInfo().getVideoInfo(videoFile.path);
-    final userId = ref.read(authenticationProvider).uid;
-    print("the height and width in flutter is $height $width");
-    FormData formdata = FormData.fromMap({
-      "userId": userId,
-      "videoId": videoId,
-      "width": width,
-        "height": height,
-      "mime": videoInfo!.mimetype,
-    });
-    Dio dio = Dio();
-    try {
-      Response response = await dio.post(
-        "http://$IP:$PORT/resize",
-        data: formdata,
-        options: Options(headers: {"Content-Type": "multipart/form-data"}),
-      );
-      if (response.statusCode == 200) {
-        print("resize operation is done");
-        state = UploadStatus.success;
-      } else {
-        state = UploadStatus.error;
-      }
-    } catch (e) {
-      print("error in resize function${e.toString()}");
-    }
-  }
-}
-
-Future<bool> alreadyExists(String videoId, String uid) async {
-  QuerySnapshot collection = await FirebaseFirestore.instance
-      .collection("users")
-      .doc(uid)
-      .collection(videoId)
-      .limit(1)
-      .get();
-  return collection.docs.isNotEmpty;
 }
 
 final uploadProvider = StateNotifierProvider<UploadNotifier, UploadStatus>(
