@@ -15,6 +15,8 @@ const server = http.createServer((req, res) => {
   } else if (req.method === "POST" && req.url === "/resize") {
     resize(req, res);
   } else if (req.method === "GET" && req.url === "/fetchvideos") {
+    console.log(req.headers);
+    
     fetchSubcollectionsAndDocs(req, res);
   } else if (req.method == "DELETE" && req.url === "/delete") {
     console.log("a request came");

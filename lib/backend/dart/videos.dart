@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_node_video_editor/backend/dart/download.dart';
+import 'package:flutter_node_video_editor/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-const ip = "192.168.1.97";
+const ip = "192.168.1.101";
 const port = "3000";
 
 class Videos extends ConsumerStatefulWidget {
@@ -30,9 +31,13 @@ class _VideosState extends ConsumerState<Videos> {
   }
 
   Future<List<Map<String, dynamic>>> fetchVideos(WidgetRef ref) async {
+    final userId = ref.read(authenticationProvider.notifier).uid;
     try {
-      final response =
-          await http.get(Uri.parse("http://$ip:$port/fetchvideos"));
+      final response = await http.get(
+          Uri.parse(
+            "http://$ip:$port/fetchvideos",
+          ),
+          headers: {"Content-Type": "application/json", "userId": userId!});
 
       if (response.statusCode != 200) {
         throw Exception("Failed to fetch videos: ${response.statusCode}");

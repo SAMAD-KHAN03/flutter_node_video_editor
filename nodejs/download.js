@@ -5,7 +5,7 @@ const fs = require("fs");
 const { getStorage } = require("firebase-admin/storage");
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require("/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/lib/backend/nodejs/go-video-editor-7bf75-firebase-adminsdk-fbsvc-8932579eaa.json");
+const serviceAccount = require("/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/nodejs/go-video-editor-7bf75-firebase-adminsdk-fbsvc-8932579eaa.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -15,8 +15,10 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function fetchSubcollectionsAndDocs(req, res) {
-  const data = [];
-  const userDocRef = db.collection("users").doc("k5YfyjmXMqTXJHSt9nKFTcRXqVK2");
+  let userId = req.headers["userid"];
+  console.log("user id received in download function is ", userId);
+
+  const userDocRef = db.collection("users").doc(userId);
   try {
     const subcollections = await userDocRef.listCollections();
     const data = [];

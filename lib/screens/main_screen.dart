@@ -115,73 +115,81 @@ class _MainScreen extends ConsumerState<MainScreen> {
                     const Color(0xFF142B35),
                   ])),
             ),
-            Positioned(
-              top: HeightWidth.height! * 0.05,
-              left: HeightWidth.width! * 0.1,
-              right: HeightWidth.width! * 0.1,
-              child: uploadstate == UploadStatus.uploading
-                  ? const CircularProgressIndicator()
-                  : uploadstate == UploadStatus.success && videoFile != null
-                      ? FutureBuilder(
-                          future: fetchThumbnail(ref),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return SizedBox(
-                                width: HeightWidth.width! * 0.8,
-                                height: HeightWidth.height! * 0.25,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      20), // Apply rounded edges
-                                  child: Image.network(
-                                    snapshot.data!,
-                                    fit: BoxFit
-                                        .fill, // Ensures the image fills the square properly
-                                  ),
-                                ),
-                              );
-                            }
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Text("${snapshot.error.toString()} "),
-                              );
-                            }
-                            return const CircularProgressIndicator();
-                          })
-                      : Container(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.black, width: 1),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: GestureDetector(
-                                    onTap: () => pickVideo(ref),
-                                    child: Iconify(
-                                      Ep.upload,
-                                      size: 24,
+            uploadstate == UploadStatus.uploading
+                ? Positioned(
+                    top: HeightWidth.height! * 0.1,
+                    left: (HeightWidth.width! / 2) - 25,
+                    right: (HeightWidth.width! / 2) - 25,
+                    child: const CircularProgressIndicator(),
+                  )
+                : Positioned(
+                    top: HeightWidth.height! * 0.05,
+                    left: HeightWidth.width! * 0.1,
+                    right: HeightWidth.width! * 0.1,
+                    child: uploadstate == UploadStatus.success &&
+                            videoFile != null
+                        ? FutureBuilder(
+                            future: fetchThumbnail(ref),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return SizedBox(
+                                  width: HeightWidth.width! * 0.8,
+                                  height: HeightWidth.height! * 0.25,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        20), // Apply rounded edges
+                                    child: Image.network(
+                                      snapshot.data!,
+                                      fit: BoxFit
+                                          .fill, // Ensures the image fills the square properly
                                     ),
                                   ),
-                                ),
-                                Text("Upload Video")
-                              ],
+                                );
+                              }
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text("${snapshot.error.toString()} "),
+                                );
+                              }
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                      constraints: BoxConstraints(
+                                          maxHeight: 25, maxWidth: 25)));
+                            })
+                        : Container(
+                            width: HeightWidth.width! * 0.8,
+                            height: HeightWidth.height! * 0.3,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                style: BorderStyle.solid,
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          width: HeightWidth.width! * 0.8,
-                          height: HeightWidth.height! * 0.3,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              style: BorderStyle.solid,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.black, width: 1),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: GestureDetector(
+                                      onTap: () => pickVideo(ref),
+                                      child: const Iconify(
+                                        Ep.upload,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                  const Text("Upload Video")
+                                ],
+                              ),
+                            )),
+                  ),
             if (uploadstate == UploadStatus.success && videoFile != null)
               Positioned(
                 top: HeightWidth.height! * 0.3 + HeightWidth.height! * 0.02,
@@ -205,7 +213,7 @@ class _MainScreen extends ConsumerState<MainScreen> {
                               .getVideoInfo(videoFile.path);
 
                           await http.delete(
-                            Uri.parse("http://192.168.1.97:3000/delete"),
+                            Uri.parse("http://192.168.1.101:3000/delete"),
                             body: jsonEncode({
                               "videoId": sha,
                               "mime": videoInfo!.mimetype,
@@ -213,15 +221,15 @@ class _MainScreen extends ConsumerState<MainScreen> {
                             headers: {"Content-Type": "application/json"},
                           );
                         } catch (e) {
-                          print("Error while deleting: $e");
+                          // print("Error while deleting: $e");
                         } finally {
-                          print("inside finally");
+                          // print("inside finally");
                           ref.watch(videoProvider.notifier).clearvideo();
                           // print(videoProvider.notifier);
                           setState(() {});
                         }
                       },
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Cancel",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -230,29 +238,8 @@ class _MainScreen extends ConsumerState<MainScreen> {
                     )),
               ),
             if (uploadstate == UploadStatus.success && videoFile != null)
-              Functionalities()
+              const Functionalities()
           ],
         ));
   }
 }
-/**FutureBuilder(
-                          future: fetchThumbnail("thumnail", ref),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return SizedBox(
-                                width: HeightWidth.width! * 0.7,
-                                height: HeightWidth.height! * 0.25,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      20), // Apply rounded edges
-                                  child: Image.network(
-                                    snapshot.data!,
-                                    fit: BoxFit
-                                        .fill, // Ensures the image fills the square properly
-                                  ),
-                                ),
-                              )
-                              
-                               onPressed: () {
-                        ref.watch(videoProvider.notifier).clearvideo();
-                      }, */

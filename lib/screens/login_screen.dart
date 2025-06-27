@@ -13,17 +13,29 @@ class _LoginScreen extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final auth = ref.watch(authenticationProvider);
     return Scaffold(
-      body: Center(
-        child: InkWell(
-          onTap: () async {
-            await auth.signIn();
-          },
-          enableFeedback: true,
-          child: SizedBox(
-              height: 150,
-              width: 150,
-              child: Image.asset('lib/assets/images/google.png')),
-        ),
+      backgroundColor: const Color(0xFF377D9A),
+      body: Column(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, fontFamily: "jua"),
+            "Authentication",
+          ),
+          Center(
+            child: InkWell(
+              onTap: () async {
+                await auth.signIn();
+              },
+              enableFeedback: true,
+              child: SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Image.asset('lib/assets/images/google.png')),
+            ),
+          ),
+        ],
       ),
     );
   }
