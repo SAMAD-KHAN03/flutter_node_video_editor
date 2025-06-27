@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node_video_editor/backend/dart/videos.dart';
+import 'package:flutter_node_video_editor/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_node_video_editor/backend/dart/fetch_data.dart';
 import 'package:flutter_node_video_editor/backend/dart/upload_video.dart';
@@ -31,29 +32,31 @@ class MainScreen extends ConsumerStatefulWidget {
   ConsumerState<MainScreen> createState() => _MainScreen();
 }
 
-outlinedButton(
-    Iconify icon, double containerSize, double padding, BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Videos(),
-      ));
-    },
-    child: Padding(
-      padding: EdgeInsets.all(padding),
-      child: Container(
-        width: containerSize,
-        height: containerSize,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1),
-            borderRadius: BorderRadius.circular(8)),
-        child: icon,
-      ),
-    ),
-  );
-}
-
 class _MainScreen extends ConsumerState<MainScreen> {
+  outlinedButton(Iconify icon, double containerSize, double padding,
+      BuildContext context, bool isLogin) {
+    return InkWell(
+      onTap: () async {
+        isLogin
+            ? await ref.watch(authenticationProvider).signOut()
+            : Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Videos(),
+              ));
+      },
+      child: Padding(
+        padding: EdgeInsets.all(padding),
+        child: Container(
+          width: containerSize,
+          height: containerSize,
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1),
+              borderRadius: BorderRadius.circular(8)),
+          child: icon,
+        ),
+      ),
+    );
+  }
+
   Future<void> pickVideo(WidgetRef ref) async {
     final uploadstatNotifier = ref.read(uploadProvider.notifier);
     final XFile? selectedVideo =
@@ -95,11 +98,11 @@ class _MainScreen extends ConsumerState<MainScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF377D9A),
           actions: [
-            outlinedButton(Iconify(Ic.arrow_back), 28, 16, context),
+            outlinedButton(Iconify(Ic.arrow_back), 28, 16, context, true),
             Spacer(),
             Text("DashBoard"),
             Spacer(),
-            outlinedButton(Iconify(Ic.outline_person), 28, 16, context)
+            outlinedButton(Iconify(Ic.outline_person), 28, 16, context, false)
           ],
         ),
         body: Stack(

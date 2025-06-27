@@ -33,7 +33,7 @@ class MyApp extends ConsumerWidget {
           data: (data) {
             if (data != null) {
               print("data is not null");
-              return const LoginScreen();
+              return const MainScreen();
             } else {
               print("data is  null");
               return const LoginScreen();
