@@ -26,12 +26,15 @@ const upload = (req, res) => {
     const inputPath = `../storage/${videoId}.${fileExt}`;
     const outputPath = `../storage/${videoId}-thumbnail.jpg`;
 
-    fs.rename(file.path, inputPath, (err) => {
+    fs.copyFile(file.path, inputPath, (err) => {
       if (err) {
-        console.error("Error saving file:", err);
+        console.error("Error copying file:", err);
         res.writeHead(500, { "Content-Type": "application/json" });
         return res.end(JSON.stringify({ error: "Failed to save file" }));
       }
+
+      // Optional: delete temp file after copy
+      fs.unlink(file.path, () => {});
 
       const job = {
         inputPath,

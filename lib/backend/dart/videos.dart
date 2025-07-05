@@ -6,7 +6,7 @@ import 'package:flutter_node_video_editor/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-const ip = "192.168.1.101";
+const ip = "13.220.96.143";
 const port = "3000";
 
 class Videos extends ConsumerStatefulWidget {

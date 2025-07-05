@@ -7,7 +7,7 @@ import 'package:flutter_node_video_editor/providers/sha_provider.dart';
 import 'package:flutter_node_video_editor/providers/video_file_provider.dart';
 import 'package:http_parser/http_parser.dart';
 
-const ip = "192.168.1.101";
+const ip = "13.220.96.143";
 const port = "3000";
 
 enum UploadStatus { idle, uploading, success, error }

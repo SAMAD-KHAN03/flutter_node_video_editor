@@ -25,6 +25,8 @@ class JobQueue {
       res.end(JSON.stringify({ message: "donef" }));
     } catch (err) {
       console.error(`Job failed: ${job.videoId}`, err);
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end({ message: "something went wrong retry" });
     } finally {
       this.isProcessing = false;
       this.processNext(res);

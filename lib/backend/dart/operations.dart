@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_video_info/flutter_video_info.dart';
 
-const ip = "192.168.1.101";
+const ip = "13.220.96.143";
 const port = "3000";
 
 enum OperationStatus { completed, inprogress, error, idle }

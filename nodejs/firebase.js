@@ -4,7 +4,7 @@ const fs = require("fs");
 const { getStorage } = require("firebase-admin/storage");
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require("/Users/samad/Documents/MyFlutterProjects/flutter_node_video_editor/nodejs/go-video-editor-7bf75-firebase-adminsdk-fbsvc-8932579eaa.json");
+const serviceAccount = require("./go-video-editor-7bf75-firebase-adminsdk-fbsvc-8932579eaa.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

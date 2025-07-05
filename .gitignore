@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 node_modules
 /lib/firebase_options.dart
+nodejs/go-video-editor-7bf75-firebase-adminsdk-fbsvc-8932579eaa.json
+nodejs/google-services.json
+nodejs/video-463518-f2ed0ef2c923.json

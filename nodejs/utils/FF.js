@@ -24,6 +24,7 @@ function thumbnail() {
   console.log("Generating thumbnail...");
 
   const ffmpeg = spawn("ffmpeg", [
+    "-y",
     "-i",
     inputPath,
     "-ss",
@@ -44,8 +45,8 @@ function thumbnail() {
         process.exit(0);
       } catch (err) {
         console.error(err);
-        job.res.writeHead(400, { "Content-Type": "application/json" });
-        job.res.end({ message: "something went wrong retry" });
+        //  res.writeHead(400, { "Content-Type": "application/json" });
+        //   res.end({ message: "something went wrong retry" });
         process.exit(1);
       }
     } else {
@@ -74,7 +75,7 @@ function resize() {
       try {
         await SaveUrlToDatabase(job);
         fs.rmSync(outputPath);
-      
+
         process.exit(0);
       } catch (err) {
         job.res.writeHead(400, { "Content-Type": "application/json" });
@@ -104,8 +105,8 @@ function audio() {
 
         process.exit(0);
       } catch (err) {
-        job.res.writeHead(400, { "Content-Type": "application/json" });
-        job.res.end({ message: "something went wrong retry" });
+        // res.writeHead(400, { "Content-Type": "application/json" });
+        // res.end({ message: "something went wrong retry" });
         console.error(err);
         process.exit(1);
       }
